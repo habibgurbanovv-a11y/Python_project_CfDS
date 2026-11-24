@@ -47,3 +47,6 @@ def calculate_driver_statistics(df):
     """
     statistics = df.groupby("driver")["lap_time_seconds"].agg(["mean","std", "min", "max"])
     return statistics
+
+string_times = df[df["time"].apply(lambda x:isinstance(x,str))]
+print(string_times[["drv","lap","time","compound","pos"]])
