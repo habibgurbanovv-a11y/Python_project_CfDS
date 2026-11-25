@@ -1,16 +1,21 @@
+
+import pandas as pd 
+
+
 def calculate_average_lap_time(df):
     """
-    Calculate the average lap time for each driver
-
+    Calculate the average lap time for each driver.
     """
-
-    average_times = df.groupby("driver")["lap_time_seconds"].mean()
-
+    average_times = (
+        df.groupby("drv")["time"]
+        .mean()
+        .sort_values(ascending=True)
+    )
     return average_times
 
 
 def calculate_fastest_driver(df):
-    fastest_driver = df.groupby("driver")["lap_time_seconds"].mean().idxmin()
+    fastest_driver = df.groupby("drv")["time"].mean().idxmin()
     return fastest_driver
 
 
@@ -24,12 +29,11 @@ def calculate_driver_ranking(df):
     # 2. Convert the result into a DataFrame
 
     # 3. Sort by average lap time
-    ranking = df.groupby("driver")["lap_time_seconds"].mean().reset_index().sort_values(by="lap_time_seconds", ascending=True).reset_index(drop=True)
+    ranking = df.groupby("drv")["time"].mean().reset_index().sort_values(by="time", ascending=True).reset_index(drop=True)
 
     return ranking
 
 
-import pandas as pd 
 
 def calculate_driver_consistency(df):
     """
@@ -37,7 +41,7 @@ def calculate_driver_consistency(df):
 
     """
 
-    consistency = df.groupby("driver")["lap_time_seconds"].std()
+    consistency = df.groupby("drv")["time"].std()
     return consistency
 
 
@@ -45,8 +49,7 @@ def calculate_driver_statistics(df):
     """
     Calculate average, standard deviation, minimum and maximum lap times.
     """
-    statistics = df.groupby("driver")["lap_time_seconds"].agg(["mean","std", "min", "max"])
+    statistics = df.groupby("drv")["time"].agg(["mean","std", "min", "max"])
     return statistics
 
-string_times = df[df["time"].apply(lambda x:isinstance(x,str))]
-print(string_times[["drv","lap","time","compound","pos"]])
+
